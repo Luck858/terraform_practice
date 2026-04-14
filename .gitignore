@@ -1,0 +1,16 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Optional (if you want to ignore lock file)
+# .terraform.lock.hcl
+
+# OS / editor
+*.log
+*.tmp
+.DS_Store
+
+Terraform/
+vpc/
