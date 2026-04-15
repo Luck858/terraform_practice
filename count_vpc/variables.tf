@@ -15,7 +15,7 @@ variable "aws_vpc" {
   }
 }
 
-variable "subnets" {
+variable "public_subnet" {
   type = list(object({
     cidr = string
     az   = string
@@ -26,12 +26,34 @@ variable "subnets" {
     {
       cidr = "192.168.0.0/24"
       az   = "ap-south-1a"
-      tag  = "subnet_one"
+      tag  = "pub-1"
     },
     {
       cidr = "192.168.1.0/24"
       az   = "ap-south-1b"
-      tag  = "subnet_two"
+      tag  = "pub-2"
+    }
+  ]
+}
+
+
+variable "private_subnet" {
+  type = list(object({
+    cidr = string
+    az   = string
+    tag  = string
+  }))
+
+  default = [
+    {
+      cidr = "192.168.2.0/24"
+      az   = "ap-south-1a"
+      tag  = "prt-1"
+    },
+    {
+      cidr = "192.168.3.0/24"
+      az   = "ap-south-1b"
+      tag  = "prt-2"
     }
   ]
 }
