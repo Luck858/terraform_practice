@@ -146,6 +146,4 @@ resource "aws_eks_node_group" "node" {
 }
 
 
-
-
-
+### aws eks update-kubeconfig --region ap-south-1  --name my-cluster-final
