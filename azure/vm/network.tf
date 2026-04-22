@@ -27,41 +27,34 @@ resource "azurerm_public_ip" "public-ip" {
 }
 
 resource "azurerm_network_security_group" "web-nsg" {
-  name                = "web-nsg"
+  name                = var.security_group.name
   resource_group_name = azurerm_resource_group.my-rg.name
   location            = azurerm_resource_group.my-rg.location
-  security_rule {
-    name                       = "openssh"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "openhttp"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
+
+}
+resource "azurerm_network_security_rule" "rules" {
+  count                       = length(var.security_rule)
+  name                        = var.security_rule[count.index].name
+  priority                    = var.security_rule[count.index].priority
+  direction                   = var.security_rule[count.index].direction
+  access                      = var.security_rule[count.index].access
+  protocol                    = var.security_rule[count.index].protocol
+  source_port_range           = var.security_rule[count.index].source_port_range
+  destination_port_range      = var.security_rule[count.index].destination_port_range
+  source_address_prefix       = var.security_rule[count.index].source_address_prefix
+  destination_address_prefix  = var.security_rule[count.index].destination_address_prefix
+  resource_group_name         = azurerm_resource_group.my-rg.name
+  network_security_group_name = azurerm_network_security_group.web-nsg.name
 }
 
 resource "azurerm_network_interface" "net-interface" {
-  name                = "net-interface"
+  name                = var.network_interface.name
   resource_group_name = azurerm_resource_group.my-rg.name
   location            = azurerm_resource_group.my-rg.location
   ip_configuration {
-    name                          = "web-net-interface"
+    name                          = var.network_interface.ip_configuration_name
     subnet_id                     = azurerm_subnet.subnets[0].id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = var.network_interface.private_ip_address_allocation
     public_ip_address_id          = azurerm_public_ip.public-ip.id
   }
 
