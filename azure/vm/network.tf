@@ -65,3 +65,5 @@ resource "azurerm_network_interface_security_group_association" "web" {
   network_interface_id      = azurerm_network_interface.net-interface.id
   network_security_group_id = azurerm_network_security_group.web-nsg.id
 }
+
+
